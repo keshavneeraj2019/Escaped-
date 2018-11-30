@@ -1,10 +1,13 @@
-impimport java.util.Scanner;
+import java.util.Scanner;
 
-pubpublic class Main {
+public class Main {
 
     public static Scanner scan;
     public static int moves = 30;
-    public static String output = "You find yourself in a large foyer. There is a door to the north. To the west is a bench against the wall. To the east is a chest on the floor. In the center of the room is a large candle. The candle is unlit.";
+    public static String output = "You find yourself in a large foyer. \n" +
+            "There is a door to the north. To the west is a bench against the wall. \n" +
+            "To the east is a chest on the floor and in the center of the room is a large candle. \n" +
+            "The candle is unlit.";
 
     public static boolean inFoyer = true;
     public static boolean inLibrary = false;
@@ -27,25 +30,32 @@ pubpublic class Main {
     public static boolean playTrumpet = false;
     public static boolean playPiano = false;
     public static boolean playDrum = false;
+    public static boolean door3Locked = true;
+    public static boolean door3Open = false;
+    public static boolean winGame=false;
 
     public static void main(String[] args) {
 
-        System.out.printf("Welcome to Escape Room. There is a set of verbs and nouns that will allow you to leave in the format of verb noun, or to move, indicate direction (north, south, east, west).\n\n");
+        System.out.printf("\nWelcome to Escape Room. There are a set of verbs and nouns that will allow you to leave\n" +
+                "Your options for verbs are: open, close, light, read, write, play, look, get, and go).\n" +
+                "Your options for nouns are: door, room, bench, chest, candle, note, matches, bookshelf, book, pen, scroll, music, trumpet, piano, drum, and lock\n" +
+                "Your options for or direction are: north, south, east, west.\n\n");
         for (int i = 1; i < 31; i++) {
             gameUsage();
             moves--;
-            if (playTrumpet && playPiano && playDrum) {
+            if (winGame) {
                 break;
             }
         }
-        if (playTrumpet && playPiano && playDrum) {
-            System.out.printf("\nCongratulations! You have completed the escape room challenge successfully in with %d moves to spare.", moves);
+        if (winGame)
+        {
+            System.out.printf("\nCongratulations! You have completed the escape room challenge successfully in\n" +
+                    " with %d moves to spare.", moves);
         }
-        else {
+        else{
             System.out.printf("\nYou have failed the escape room challenge. Try again!");
         }
     }
-
     public static void gameUsage() {
         if (inFoyer) {
             foyer();
@@ -66,7 +76,7 @@ pubpublic class Main {
         switch (test) {
 
             case "look bench":
-                output = "There is a note on the bench.";
+                output = "Under the dust and cob webs, you find a note. Read it as you wish.";
                 break;
 
             case "read note":
@@ -74,24 +84,24 @@ pubpublic class Main {
                 break;
 
             case "look chest":
-                output = "the chest is closed.";
+                output = "There are matches in the chest; however the chest is closed.";
                 break;
 
             case "open chest":
                 chestOpen = true;
-                output = "There are matches in the chest.";
+                output = "Hah! In the chest lies a box of matches.";
                 break;
 
             case "get matches":
                 hasMatches = true;
-                output = "You have a box of matches.";
+                output = "You have picked up a box of matches, use them wisely.";
                 break;
 
             case "light candle":
                 if (hasMatches) {
                     candleLit = true;
                     door1Locked = false;
-                    output = "The candle is lit. You heard a metal grinding sound from the north.";
+                    output = "The candle is lit! You hear a metal grinding sound from the north, proceed if you wish.";
                 }
                 else {
                     output = "You don't have any matches.";
@@ -101,29 +111,32 @@ pubpublic class Main {
             case "look door":
                 if (!door1Locked) {
                     if (door1Open) {
-                        output = "The door is unlocked and open.";
+                        output = "The door is unlocked and open. Open at your own risk";
                     }
                     else {
                         output = "The door is unlocked, but closed.";
                     }
                 }
                 else {
-                    output = "The door is locked.";
+                    output = "The door is locked. Find a way to escape";
                 }
                 break;
 
             case "open door":
                 if (!door1Locked) {
                     door1Open = true;
-                    output = "The north door is open.";
+                    output = "The north door is open. Move as you wish.";
                 }
                 break;
 
-            case "north":
+            case "go north":
                 if (door1Open) {
                     inFoyer = false;
                     inLibrary = true;
-                    output = "You have left the foyer. On your way out, the door slammed and locked. You are now in the library and cannot return to the foyer. In the library there are stacks of books lining the shelves, a desk, a pen, and a scroll. There is another locked door to the north.";
+                    output = "You have left the foyer. On your way out, the door slammed and locked.\n" +
+                            "You are now in the library and cannot return to the foyer. \n" +
+                            "In the library there are stacks of books lining the shelves, a desk, a pen, and a scroll.\n" +
+                            "There is another locked door to the north.\n";
                 }
                 break;
         }
@@ -137,7 +150,7 @@ pubpublic class Main {
         switch (test) {
 
             case "look bookshelf":
-                output = "There is a book titled 'The Autobiography of ...' with the rest of the title empty.";
+                output = "There is a book titled 'The Autobiography of ...'";
                 break;
 
             case "get pen":
@@ -152,41 +165,46 @@ pubpublic class Main {
             case "write book":
             case "write name":
                 writeBook = true;
+                getPen = true;
                 door2Locked = false;
-                output = "You have completed the autobiography You heard a metal grinding sound from the north.";
+                output = "You have completed the autobiography. You hear a metal grinding sound from the north,proceed if you wish.";
                 break;
 
             case "look door":
                 if (!door2Locked) {
                     if (door2Open) {
-                        output = "The door is unlocked and open.";
+                        output = "The door is unlocked and open. Open at your own risk.";
                     }
                     else {
                         output = "The door is unlocked, but closed.";
                     }
                 }
                 else {
-                    output = "The door is locked.";
+                    output = "The door is locked. Find a way to escape.";
                 }
                 break;
 
             case "open door":
                 if (!door2Locked) {
                     door2Open = true;
-                    output = "The north door is open.";
+                    output = "The north door is open. Move as you wish.";
                 }
                 break;
 
-            case "north":
-                if (door1Open) {
+            case "go north":
+                if (door2Open) {
                     inLibrary = false;
                     inConservatory = true;
-                    output = " You have left the library. On your way out, the door slammed and locked. You are now in the conservatory and cannot return to the library. In the conservatory there are there are three instruments: a trumpet, a piano, and a drum. There is a sheet of music on a stand.";
+                    output = " You have left the library. On your way out, the door slammed and locked.\n" +
+                            " You are now in the conservatory and cannot return to the library.\n" +
+                            " In the conservatory there are there are three instruments: \n" +
+                            "a trumpet, a piano, and a drum. There is a sheet of music on a stand.\n";
                 }
                 break;
 
             default:
-                output = "In the library there are stacks of books lining the shelves, a desk, a pen, and a scroll. There is another locked door to the north.";
+                output = "In the library there are stacks of books lining the shelves, a desk, a pen, and a scroll.\n" +
+                        " There is another locked door to the north.";
         }
     }
 
@@ -197,41 +215,66 @@ pubpublic class Main {
 
         switch (test) {
             case "read music":
-                output = "Timbre, Tone, Time";
+                output = "'Timbre, Tone, Time.'";
                 break;
 
             case "play trumpet":
                 if (!playPiano && !playDrum) {
                     playTrumpet = true;
-                    output = "*trumpet noise*";
+                    output = "Well done! That was a perfect timbre.";
                 }
                 else {
-                    output = "Hmm... Something seems to be wrong with the trumpet. It isn't playing correctly.";
+                    output = "Seems like you played the wrong note. HAH! Do you even know how to play the trumpet?";
+                    playTrumpet = false;
+                    playPiano = false;
+                    playDrum = false;
                 }
                 break;
 
             case "play piano":
-                if (playTrumpet && !playDrum) {
+                if (playTrumpet && !playDrum && !playPiano) {
                     playPiano = true;
-                    output = "*piano noise*";
+                    output = "Well done! That was the perfect Tone.";
                 }
                 else {
-                    output = "Hmm... Something seems to be wrong with the piano. It isn't playing correctly.";
+                    output = "Seems like you played the wrong tone. HAH! Do you even know how to play the piano?";
+                    playTrumpet = false;
+                    playPiano = false;
+                    playDrum = false;
                 }
                 break;
 
             case "play drum":
-                if (playTrumpet && playPiano) {
+                if (playTrumpet && playPiano && !playDrum) {
                     playDrum = true;
-                    output = "*drum noise*";
+                    door3Locked = false;
+                    output = "Well done! You have played great music. You hear a metal grinding sound from the north, proceed if you wish.\" .";
                 }
                 else {
-                    output = "Hmm... Something seems to be wrong with the drum. It isn't playing correctly.";
+                    output = "Seems like you played the wrong beat. HAH! Do you even know how to play the drum?";
+                    playTrumpet = false;
+                    playPiano = false;
+                    playDrum = false;
+                }
+                break;
+
+            case "open door":
+                if (!door3Locked) {
+                    door3Open = true;
+                    output = "The north door is open.";
+                }
+                break;
+
+            case "go north":
+                if (!door3Locked) {
+                    door3Open = true;
+                    winGame = true;
                 }
                 break;
 
             default:
-                output = "In the conservatory there are three instruments: a trumpet, a piano, and a drum. There is a sheet of music on a stand.";
+                output = "In the conservatory there are three instruments: a trumpet, a piano, and a drum.\n" +
+                        " There is a sheet of music on a stand.";
         }
     }
 }
